@@ -1,0 +1,407 @@
+/* =============================================================================
+   style.css
+   Optimisation de Portefeuille International sous contraintes ESG
+   =============================================================================
+   Personnalisation visuelle de l'interface Shiny :
+   - Palette de couleurs cohérente (finance/ESG : bleu professionnel + vert ESG)
+   - Typographie Google Fonts (Inter)
+   - Mise en page de la navbar, du panneau de contrôle et des commentaires réactifs
+   ============================================================================= */
+
+/* --- Import de la typographie Google Fonts (Inter) -------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* --- Variables CSS ----------------------------------------------------------- */
+:root {
+  --couleur-principale: #1a3a5c;
+  --couleur-accent: #2ecc71;
+
+  --couleur-fond: #f4f6f9;
+  --couleur-panneau: #ffffff;
+  --couleur-texte-prim: #2c3e50;
+  --couleur-texte-sec: #7f8c8d;
+  --couleur-bordure: #dce3ec;
+  --ombre-douce: 0 2px 12px rgba(26, 58, 92, 0.10);
+  --rayon-bordure: 8px;
+  --transition: all 0.25s ease;
+}
+
+/* --- Base globale ------------------------------------------------------------ */
+body {
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  font-size: 14px;
+  color: var(--couleur-texte-prim);
+  background-color: var(--couleur-fond);
+  margin: 0;
+  padding: 0;
+}
+
+/* --- Barre de navigation (navbarPage) --------------------------------------- */
+.navbar {
+  background-color: var(--couleur-principale) !important;
+  border-bottom: 3px solid var(--couleur-accent);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  font-family: 'Inter', sans-serif;
+  position: sticky;
+  top: 0;
+  z-index: 1060;
+}
+
+.navbar-default .navbar-brand {
+  color: #ffffff !important;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+}
+
+.navbar-default .navbar-nav>li>a {
+  color: rgba(255, 255, 255, 0.85) !important;
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+  transition: var(--transition);
+  padding: 15px 18px;
+}
+
+.navbar-default .navbar-nav>li>a:hover,
+.navbar-default .navbar-nav>.active>a,
+.navbar-default .navbar-nav>.active>a:hover {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.12) !important;
+  border-bottom: 3px solid var(--couleur-accent);
+}
+
+/* --- Sidebar fixe gauche repliable --------------------------------------- */
+
+:root {
+  --sidebar-width: 300px;
+}
+
+#sidebar-wrapper {
+  position: fixed;
+  top: 51px;
+  /* Hauteur de la navbar Bootstrap */
+  left: 0;
+  height: calc(100vh - 51px);
+  width: var(--sidebar-width);
+  z-index: 1050;
+  display: flex;
+  flex-direction: row;
+  pointer-events: none;
+}
+
+#sidebar {
+  width: var(--sidebar-width);
+  height: 100%;
+  overflow-y: auto;
+  background-color: var(--couleur-panneau);
+  border-right: 1px solid var(--couleur-bordure);
+  box-shadow: 2px 0 16px rgba(26, 58, 92, 0.10);
+  padding: 20px 18px 40px;
+  box-sizing: border-box;
+  will-change: transform;
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.28s ease;
+  pointer-events: all;
+}
+
+#sidebar.collapsed {
+  transform: translateX(calc(-1 * var(--sidebar-width)));
+  box-shadow: none;
+}
+
+/* Bouton toggle (chevron) */
+#sidebar_toggle {
+  position: absolute;
+  left: var(--sidebar-width);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 56px;
+  background-color: var(--couleur-principale);
+  border: none;
+  border-radius: 0 6px 6px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 0 8px rgba(26, 58, 92, 0.18);
+  transition: left 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.2s ease;
+  pointer-events: all;
+  padding: 0;
+  z-index: 1051;
+}
+
+.sidebar-collapsed #sidebar_toggle {
+  left: 0;
+}
+
+#sidebar_toggle:hover {
+  background-color: var(--couleur-accent);
+}
+
+/* Icône chevron */
+.chevron-icon {
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  user-select: none;
+}
+
+/* Titre de la sidebar */
+.sidebar-header {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--couleur-accent);
+}
+
+.sidebar-header h4 {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--couleur-principale);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin: 0;
+}
+
+/* Séparateur interne de la sidebar */
+.sidebar-sep {
+  margin: 12px 0;
+  border-color: var(--couleur-bordure);
+}
+
+/* Conteneur principal en flexbox (sticky footer) */
+.navbar+.container-fluid {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 51px);
+}
+
+/* Décalage du contenu principal */
+.tab-content {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  transition: margin-left 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.sidebar-collapsed .tab-content {
+  margin-left: 0;
+}
+
+/* Espacement en haut du contenu de chaque onglet */
+.tab-pane > .container-fluid {
+  padding-top: 20px;
+}
+
+/* Espacement entre les graphiques empilés */
+.graphique-container {
+  margin-bottom: 30px;
+}
+
+/* --- Labels des widgets ---------------------------------------------------- */
+.control-label,
+label {
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--couleur-texte-prim);
+  margin-bottom: 4px;
+}
+
+/* --- numericInput ----------------------------------------------------------- */
+.form-control {
+  border-radius: 6px;
+  border: 1px solid var(--couleur-bordure);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--couleur-texte-prim);
+  transition: var(--transition);
+}
+
+.form-control:focus {
+  border-color: var(--couleur-principale);
+  box-shadow: 0 0 0 2px rgba(26, 58, 92, 0.15);
+  outline: none;
+}
+
+/* --- sliderInput ------------------------------------------------------------ */
+.irs--shiny .irs-bar {
+  background: var(--couleur-principale);
+  border-top: 1px solid var(--couleur-principale);
+  border-bottom: 1px solid var(--couleur-principale);
+}
+
+.irs--shiny .irs-handle {
+  background: var(--couleur-principale);
+  border: 2px solid var(--couleur-accent);
+}
+
+.irs--shiny .irs-from,
+.irs--shiny .irs-to,
+.irs--shiny .irs-single {
+  background: var(--couleur-principale);
+  font-size: 11px;
+}
+
+/* --- pickerInput (shinyWidgets) -------------------------------------------- */
+.bootstrap-select .btn-default {
+  background-color: #ffffff;
+  border: 1px solid var(--couleur-bordure);
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--couleur-texte-prim);
+  transition: var(--transition);
+}
+
+.bootstrap-select .btn-default:hover,
+.bootstrap-select.open .btn-default {
+  border-color: var(--couleur-principale);
+  box-shadow: 0 0 0 2px rgba(26, 58, 92, 0.12);
+}
+
+.bootstrap-select .dropdown-menu li.selected>a,
+.bootstrap-select .dropdown-menu li>a:hover {
+  background-color: var(--couleur-principale);
+  color: #ffffff;
+}
+
+/* --- Zones de réception des sorties ---------------------------------------- */
+.graphique-container,
+.tableau-container {
+  background-color: var(--couleur-panneau);
+  border-radius: var(--rayon-bordure);
+  box-shadow: var(--ombre-douce);
+  border: 1px solid var(--couleur-bordure);
+  padding: 0;
+  overflow: hidden;
+}
+
+.tableau-container {
+  padding: 0 16px 16px;
+}
+
+/* Titres de section au-dessus des sorties */
+.section-titre {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--couleur-principale);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 12px 16px 0 16px;
+  margin-bottom: 6px;
+}
+
+/* --- Commentaires réactifs (textOutput dans tags$div) ----------------------- */
+.commentaire-reactif {
+  background-color: var(--couleur-panneau);
+  border-radius: var(--rayon-bordure);
+  box-shadow: var(--ombre-douce);
+  border-left: 4px solid var(--couleur-principale);
+  padding: 14px 18px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--couleur-texte-prim);
+  min-height: 48px;
+  transition: var(--transition);
+}
+
+.commentaire-reactif:hover {
+  box-shadow: 0 4px 16px rgba(26, 58, 92, 0.14);
+}
+
+.commentaire-esg {
+  border-left-color: var(--couleur-accent);
+}
+
+.commentaire-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--couleur-texte-sec);
+  margin-bottom: 6px;
+}
+
+/* Icône devant chaque label de commentaire */
+.commentaire-financier .commentaire-label::before {
+  content: "📊 ";
+}
+
+.commentaire-esg .commentaire-label::before {
+  content: "🌱 ";
+}
+
+.commentaire-texte {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--couleur-texte-prim);
+}
+
+/* État vide : indicateur de chargement */
+.commentaire-reactif:empty::after,
+.commentaire-texte:empty::after {
+  content: "En attente des paramètres…";
+  color: var(--couleur-texte-sec);
+  font-style: italic;
+  font-size: 12px;
+}
+
+/* --- Onglet CARTE ----------------------------------------------------------- */
+#tab-carte .leaflet-container {
+  border-radius: 0 0 var(--rayon-bordure) var(--rayon-bordure);
+}
+
+
+/* Tables DT */
+table.dataTable thead th {
+  background-color: var(--couleur-principale);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  border-bottom: none;
+}
+
+table.dataTable tbody tr:hover {
+  background-color: rgba(26, 58, 92, 0.06) !important;
+}
+
+
+/* --- Responsive ------------------------------------------------------------- */
+@media (max-width: 768px) {
+  #sidebar-wrapper {
+    width: 260px;
+  }
+
+  :root {
+    --sidebar-width: 260px;
+  }
+
+  #sidebar {
+    width: 260px;
+    transform: translateX(-260px);
+  }
+
+  body.sidebar-collapsed .tab-content {
+    margin-left: 0;
+  }
+}
+
+/* --- Pied de page ----------------------------------------------------------- */
+#app-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  font-size: 11px;
+  color: var(--couleur-texte-sec);
+  background-color: var(--couleur-fond);
+  border-top: 1px solid var(--couleur-bordure);
+  letter-spacing: 0.3px;
+  margin-top: 0;
+  position: relative;
+  z-index: 1100;
+}
